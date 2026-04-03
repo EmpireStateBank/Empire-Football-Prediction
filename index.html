@@ -1,65 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vip Password</title>
-    <style>
-        body {
-            text-align: center;
-            font-family: Arial, sans-serif;
-        }
-        #vip-image {
-            display: block;
-            margin: 0 auto;
-            width: 200px; /* Adjust the width as needed */
-            height: auto; /* Maintain aspect ratio */
-        }
-        #subscribed-link {
-            display: none;
-            margin-top: 20px;
-        }
-        ul.price-list {
-            list-style-type: none;
-            padding: 0;
-        }
-        ul.price-list li {
-            margin: 5px 0;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Empire Football Prediction</title>
+
+<style>
+
+body{
+font-family: Arial;
+background:#0a1630;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.container{
+width:350px;
+background:#0f2147;
+padding:20px;
+border-radius:15px;
+box-shadow:0 0 20px rgba(0,0,0,0.5);
+}
+
+h2{
+text-align:center;
+margin-bottom:20px;
+}
+
+.match{
+background:#142b5c;
+padding:15px;
+border-radius:10px;
+margin-bottom:10px;
+}
+
+.teams{
+font-size:18px;
+font-weight:bold;
+}
+
+.time{
+font-size:14px;
+opacity:0.8;
+margin-top:5px;
+}
+
+</style>
 </head>
+
 <body>
-    <h1>Vip Password</h1>
-    <p>Price:</p>
-    <ul class="price-list">
-        <li>Daily Plan: ₦5,500</li>
-        <li>Weekly Plan: ₦10,000</li>
-        <li>Monthly Plan: ₦27,000</li>
-    </ul>
-    <img id="vip-image" src="AddText_04-04-03.50.43.png" alt="Vip Image">
-    <div id="countdown"></div>
-    <a id="subscribed-link" href="https://sambo7785.github.io/Subscription-Form/">I have Subscribed</a>
 
-    <script>
-        let countdown = 60;
-        const countdownElement = document.getElementById('countdown');
-        const vipImage = document.getElementById('vip-image');
-        const subscribedLink = document.getElementById('subscribed-link');
+<div class="container">
 
-        const countdownInterval = setInterval(() => {
-            countdown--;
-            countdownElement.textContent = `Time remaining: ${countdown} seconds`;
+<h2>Empire Football Prediction</h2>
 
-            if (countdown === 9) {
-                vipImage.style.display = 'none';
-            }
+<!-- ===== MATCH LIST (EDIT ONLY HERE) ===== -->
 
-            if (countdown === 0) {
-                clearInterval(countdownInterval);
-                subscribedLink.style.display = 'block';
-                countdownElement.textContent = '';
-            }
-        }, 1000);
-    </script>
+<div class="match">
+<div class="teams">Vitesse vs Emmen</div>
+<div class="time">Today • 19:00</div>
+</div>
+
+<div class="match">
+<div class="teams">Panetolikos vs Atromitos</div>
+<div class="time">Tomorrow • 18:00</div>
+</div>
+
+<!-- Add another match like this -->
+
+<div class="match">
+<div class="teams">Team A vs Team B</div>
+<div class="time">Date • Time</div>
+</div>
+
+<!-- ===== END MATCH LIST ===== -->
+
+</div>
+
 </body>
 </html>
