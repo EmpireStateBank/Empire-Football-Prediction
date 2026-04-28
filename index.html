@@ -313,7 +313,7 @@
 <body>
     <div class="container">
         <header>
-            <img src="./esb-logo.png" alt="EmpireStateBank Logo" class="logo">
+            <img src="./AddText_04-11-12.53.52.png" alt="EmpireStateBank Logo" class="logo">
             <div class="tagline">Empowering Your Financial Growth | Email System</div>
         </header>
 
@@ -432,7 +432,7 @@
                 <table width="100%" style="max-width: 600px; background-color: #0b0b0b; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); overflow: hidden;">
                     <tr>
                         <td align="center" style="padding: 40px 20px; background-color: #0b0b0b;">
-                            <img src="./esb-logo.png" alt="EmpireStateBank Logo" style="max-width: 160px; height: auto; display: block; margin: 0 auto;">
+                            <img src="./AddText_04-11-12.53.52.png" alt="EmpireStateBank Logo" style="max-width: 160px; height: auto; display: block; margin: 0 auto;">
                         </td>
                     </tr>
                     <tr>
@@ -632,33 +632,39 @@
             try {
                 const html = generateHTML({ customerName, activationDate, tradeDate });
                 
-                // Use FormData for proper form submission
-                const formData = new FormData();
-                formData.append('email', toEmail);
-                formData.append('name', customerName);
-                formData.append('subject', 'Account Activated - EmpireStateBank');
-                formData.append('message', `Customer: ${customerName}\nActivation Date: ${formatDate(activationDate)}\nTrade Date: ${formatDate(tradeDate)}\n\n${html}`);
+                // Create a simple object for Formspree
+                const payload = {
+                    email: toEmail,
+                    name: customerName,
+                    subject: 'Account Activated - EmpireStateBank',
+                    message: `Customer: ${customerName}\nActivation Date: ${formatDate(activationDate)}\nTrade Date: ${formatDate(tradeDate)}`
+                };
 
+                // Send to Formspree with proper headers
                 const response = await fetch(FORMSPREE_ENDPOINT, {
                     method: 'POST',
-                    body: formData
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
                 });
 
                 console.log('Response status:', response.status);
+                const responseData = await response.json();
+                console.log('Response:', responseData);
 
-                if (response.ok || response.status === 200) {
+                if (response.ok) {
                     showAlert(`✅ Email successfully sent to ${toEmail}!`, 'success');
                     sentCount++;
                     document.getElementById('stat-sent').textContent = sentCount;
                     document.getElementById('toEmail').value = '';
                 } else {
-                    const errorText = await response.text();
-                    console.error('Error:', errorText);
-                    showAlert(`❌ Error: ${response.status}. Please try again.`, 'error');
+                    showAlert(`❌ Error: ${responseData.error || 'Unknown error'}`, 'error');
                 }
             } catch (error) {
                 console.error('Fetch error:', error);
-                showAlert('❌ Network error: ' + error.message, 'error');
+                showAlert('❌ Failed to send. Please check your connection and try again.', 'error');
             } finally {
                 sendBtn.disabled = false;
                 sendBtnText.textContent = '📤 Send Email';
