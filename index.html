@@ -31,11 +31,10 @@
         }
 
         .logo {
-            font-size: 28px;
-            font-weight: 700;
-            color: #d4af37;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
+            max-width: 200px;
+            height: auto;
+            margin: 0 auto 20px;
+            display: block;
         }
 
         .tagline {
@@ -305,13 +304,16 @@
             .button-group {
                 grid-template-columns: 1fr;
             }
+            .logo {
+                max-width: 150px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <div class="logo">👑 EmpireStateBank</div>
+            <img src="./esb-logo.png" alt="EmpireStateBank Logo" class="logo">
             <div class="tagline">Empowering Your Financial Growth | Email System</div>
         </header>
 
@@ -430,8 +432,7 @@
                 <table width="100%" style="max-width: 600px; background-color: #0b0b0b; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); overflow: hidden;">
                     <tr>
                         <td align="center" style="padding: 40px 20px; background-color: #0b0b0b;">
-                            <div style="font-size: 36px; font-weight: 700; color: #d4af37; letter-spacing: 2px;">👑 ESB</div>
-                            <p style="margin: 8px 0 0 0; font-size: 12px; color: #999; letter-spacing: 0.5px;">EmpireStateBank</p>
+                            <img src="./esb-logo.png" alt="EmpireStateBank Logo" style="max-width: 160px; height: auto; display: block; margin: 0 auto;">
                         </td>
                     </tr>
                     <tr>
@@ -631,37 +632,33 @@
             try {
                 const html = generateHTML({ customerName, activationDate, tradeDate });
                 
+                // Use FormData for proper form submission
                 const formData = new FormData();
                 formData.append('email', toEmail);
+                formData.append('name', customerName);
                 formData.append('subject', 'Account Activated - EmpireStateBank');
-                formData.append('message', `
-Customer: ${customerName}
-Activation Date: ${formatDate(activationDate)}
-Trade Date: ${formatDate(tradeDate)}
-
-Email Template:
-${html}
-                `);
-                formData.append('html', html);
+                formData.append('message', `Customer: ${customerName}\nActivation Date: ${formatDate(activationDate)}\nTrade Date: ${formatDate(tradeDate)}\n\n${html}`);
 
                 const response = await fetch(FORMSPREE_ENDPOINT, {
                     method: 'POST',
                     body: formData
                 });
 
-                if (response.ok) {
+                console.log('Response status:', response.status);
+
+                if (response.ok || response.status === 200) {
                     showAlert(`✅ Email successfully sent to ${toEmail}!`, 'success');
                     sentCount++;
                     document.getElementById('stat-sent').textContent = sentCount;
-                    
-                    // Clear email field
                     document.getElementById('toEmail').value = '';
                 } else {
-                    showAlert('❌ Failed to send email. Please check your email address.', 'error');
+                    const errorText = await response.text();
+                    console.error('Error:', errorText);
+                    showAlert(`❌ Error: ${response.status}. Please try again.`, 'error');
                 }
             } catch (error) {
-                showAlert('❌ Error: ' + error.message, 'error');
-                console.error('Error:', error);
+                console.error('Fetch error:', error);
+                showAlert('❌ Network error: ' + error.message, 'error');
             } finally {
                 sendBtn.disabled = false;
                 sendBtnText.textContent = '📤 Send Email';
